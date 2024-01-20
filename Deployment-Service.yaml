@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-core
+  labels:
+    app: fastapi-main-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-main-test
+  template:
+    metadata:
+      labels:
+        app: fastapi-main-test
+    spec:
+      containers:
+        - name: fastapi-main-test
+          image: phoptorn/hello-world
+          imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service
+spec:
+  selector:
+    app: fastapi-main-test
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+    nodePort: 30111 ######
+
